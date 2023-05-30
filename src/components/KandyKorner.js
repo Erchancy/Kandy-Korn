@@ -5,6 +5,7 @@ import { NavBar } from "./nav/NavBar"
 import { Login } from "./auth/Login"
 import { Register } from "./auth/Register"
 import "./KandyKorner.css"
+import { LocationList } from "./locations/Locations"
 
 
 export const KandyKorner = () => {

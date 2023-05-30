@@ -1,0 +1,17 @@
+.location_list {
+    display: flex;
+    border: 3px dotted wheat;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: brown;
+}
+
+.location_item {
+    display: flex;
+    border: 3px solid rgb(215, 177, 107);
+    flex-basis: 30%;
+    margin: 10px;
+    padding: 10px;
+    white-space: pre-line;
+    background-color: blanchedalmond;
+}
