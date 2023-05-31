@@ -5,6 +5,7 @@ export const HireEmployeeForm = () => {
 
     const [user, updateUser] = useState({
         name: "",
+        isStaff: true
     })
 
     const [employee, updateEmployee] = useState({
@@ -19,7 +20,7 @@ export const HireEmployeeForm = () => {
 
     useEffect(
         () => {
-            const getLocationList = async() => {
+            const getLocationList = async () => {
                 const response = await fetch("http://localhost:8088/locations")
                 const locations = await response.json()
                 setLocations(locations)
@@ -31,7 +32,7 @@ export const HireEmployeeForm = () => {
 
     useEffect(
         () => {
-            const getUserList = async() => {
+            const getUserList = async () => {
                 const response = await fetch("http://localhost:8088/users")
                 const users = await response.json()
                 setUsers(users)
@@ -43,64 +44,67 @@ export const HireEmployeeForm = () => {
 
     const getLocationOptions = () => {
         return locations.map((location) => (
-          <div className="form-group" key={location.id}>
-            <label htmlFor={location.address}>{location.address}</label>
-            <input
-              required
-              autoFocus
-              type="radio"
-              name="location"
-              placeholder="The kind of product"
-              value={location.id}
-              onChange={(evt) => {
-                const copy = { ...employee };
-                copy.locationId = evt.target.value;
-                updateEmployee(copy);
-              }}
-            />
-          </div>
+            <div className="form-group" key={location.id}>
+                <label htmlFor={location.address}>{location.address}</label>
+                <input
+                    required
+                    autoFocus
+                    type="radio"
+                    name="location"
+                    placeholder="The kind of product"
+                    value={location.id}
+                    onChange={(evt) => {
+                        const copy = { ...employee };
+                        copy.locationId = evt.target.value;
+                        updateEmployee(copy);
+                    }}
+                />
+            </div>
         ));
-      };
-      
+    };
+
 
     const navigate = useNavigate()
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
-        const newUser = {
-            name: user.name,
-            isStaff: true
-        }
-
-        const newEmployee = {
-            userId: users.length+1, // This is jank and I hate it
-            startDate: employee.startDate,
-            payRate: employee.payRate,
-            locationId: employee.locationId
-        }
-
         fetch(`http://localhost:8088/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(newUser)
+            body: JSON.stringify(user)
         })
-        .then(response => response.json())
-
-        return fetch(`http://localhost:8088/employees`, {
-               method: "POST",
-               headers: {
-                   "Content-Type": "application/json"
-               },
-               body: JSON.stringify(newEmployee)
-           })
-           .then(response => response.json())
-           .then(() => {
-           navigate("/employees")
-       })
+            .then(response => response.json())
+            .then((createdUser) => {
+                debugger
+                const copy = { ...employee };
+                copy.userId = createdUser.id;
+                updateEmployee(copy)
+            })
     }
+
+    useEffect(
+        () => {
+            if ( employee.userId !== 0) {
+                fetch(`http://localhost:8088/employees`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(employee)
+                })
+                    .then(response => response.json())
+                    .then(() => {
+                        navigate("/employees")
+                    })
+            }
+        },
+        [employee]
+    )
+
+
 
     return (
         <form className="employeeForm">
@@ -116,7 +120,7 @@ export const HireEmployeeForm = () => {
                         value={user.name}
                         onChange={
                             (evt) => {
-                                const copy = {...user}
+                                const copy = { ...user }
                                 copy.name = evt.target.value
                                 updateUser(copy)
                             }
@@ -124,7 +128,7 @@ export const HireEmployeeForm = () => {
                 </div>
             </fieldset>
             <fieldset>
-            <div className="form-group">
+                <div className="form-group">
                     <label htmlFor="locations">Location:</label>
                 </div>
                 {
@@ -142,7 +146,7 @@ export const HireEmployeeForm = () => {
                         value={employee.startDate}
                         onChange={
                             (evt) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.startDate = evt.target.value
                                 updateEmployee(copy)
                             }
@@ -160,17 +164,18 @@ export const HireEmployeeForm = () => {
                         value={employee.payRate}
                         onChange={
                             (evt) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.payRate = evt.target.value
                                 updateEmployee(copy)
                             }
                         } />
                 </div>
             </fieldset>
-            <button 
+            <button
                 onClick={(clickEvent) => handleSaveButtonClick(clickEvent)}
                 className="btn btn-primary">
                 Submit Form
             </button>
-            </form>
-    )}
+        </form>
+    )
+}
