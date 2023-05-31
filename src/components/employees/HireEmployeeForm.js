@@ -1,5 +1,5 @@
-import { useEffect, useState, useSyncExternalStore } from "react"
-import { useNavigate, useResolvedPath } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const HireEmployeeForm = () => {
 
@@ -74,7 +74,7 @@ export const HireEmployeeForm = () => {
         }
 
         const newEmployee = {
-            userId: users.length+1,
+            userId: users.length+1, // This is jank and I hate it
             startDate: employee.startDate,
             payRate: employee.payRate,
             locationId: employee.locationId
