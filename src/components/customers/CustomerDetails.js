@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { LoyaltyEdit } from "./LoyaltyEdit"
 
 
 // This function creates CustomerId state through useParam to dynamically fill the object depending on the currrent url route?
@@ -26,7 +27,7 @@ export const CustomerDetails = () => {
     return <section className="customer">
     <header className="customer__header">{customer?.user?.name}</header>
     <div>Email: {customer?.user?.email}</div>
-    <div>Loyalty Points: {customer.loyaltyPoints}</div>
+    <LoyaltyEdit customerId={customerId} customer={customer}/>
     <footer></footer>
 </section>
 }

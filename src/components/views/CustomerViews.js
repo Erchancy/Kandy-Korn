@@ -3,6 +3,7 @@ import { LocationList } from "../locations/Locations"
 import { ProductList } from "../products/ProductList"
 import { ProductSearch } from "../products/ProductSearch"
 import { ProductContainer } from "../products/ProductContainer"
+import { CustomerOrders } from "../customers/CustomerOrders"
 
 export const CustomerViews = () => {
 	return (
@@ -15,6 +16,7 @@ export const CustomerViews = () => {
                 <Route path="locations" element={ <LocationList /> } />
                 <Route path="products" element={ <ProductList /> } />
                 <Route path="search" element={ <ProductContainer /> } />
+                <Route path="orders" element={ <CustomerOrders /> } />
             </Route>
         </Routes>
     )
