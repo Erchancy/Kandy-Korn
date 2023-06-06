@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import "./Locations.css"
+import { getLocationList } from "../ApiManager"
 
 export const LocationList = () => {
     const [locations, setLocations] = useState([])
-    const navigate = useNavigate()
 
     useEffect(
         () => {
-            const getLocations = async() => {
-                const response = await fetch("http://localhost:8088/locations")
-                const locations = await response.json()
+            getLocationList()
+            .then((locations) => {
                 setLocations(locations)
-            }
-            getLocations()
-        },
+        })},
         []
     )
 

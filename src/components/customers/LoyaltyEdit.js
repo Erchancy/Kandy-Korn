@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { editLoyalty } from "../ApiManager"
 
 export const LoyaltyEdit = ({ customerId, customer }) => {
 
@@ -22,15 +23,8 @@ export const LoyaltyEdit = ({ customerId, customer }) => {
         }
 
         // Perform the fetch() PUT to alter the object in the database
-        return fetch(`http://localhost:8088/customers/${customer.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updatedCustomer)
-        })
-            .then(response => response.json())
-            .then(() => { navigate("/customers") })
+        editLoyalty(customer, updatedCustomer)
+        .then(() => { navigate("/customers") })
     }
 
     return (
@@ -47,7 +41,7 @@ export const LoyaltyEdit = ({ customerId, customer }) => {
                             value={loyaltyId.loyaltyId}
                             onChange={
                                 (evt) => {
-                                    const copy = { ...customer }
+                                    const copy = {...customer }
                                     copy.loyaltyId = parseInt(evt.target.value)
                                     updateLoyaltyId(copy)
                                 }

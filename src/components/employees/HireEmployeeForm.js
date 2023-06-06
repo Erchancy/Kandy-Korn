@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { newEmployee, newUser, getLocationList, getUserList } from "../ApiManager"
 
 export const HireEmployeeForm = () => {
 
@@ -20,24 +21,20 @@ export const HireEmployeeForm = () => {
 
     useEffect(
         () => {
-            const getLocationList = async () => {
-                const response = await fetch("http://localhost:8088/locations")
-                const locations = await response.json()
-                setLocations(locations)
-            }
             getLocationList()
+                .then((locations) => {
+                    setLocations(locations)
+                })
         },
         []
     )
 
     useEffect(
         () => {
-            const getUserList = async () => {
-                const response = await fetch("http://localhost:8088/users")
-                const users = await response.json()
-                setUsers(users)
-            }
             getUserList()
+                .then((users) => {
+                    setUsers(users)
+                })
         },
         []
     )
@@ -68,17 +65,8 @@ export const HireEmployeeForm = () => {
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
-
-        fetch(`http://localhost:8088/users`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-            .then(response => response.json())
+        newUser(user)
             .then((createdUser) => {
-                debugger
                 const copy = { ...employee };
                 copy.userId = createdUser.id;
                 updateEmployee(copy)
@@ -87,15 +75,8 @@ export const HireEmployeeForm = () => {
 
     useEffect(
         () => {
-            if ( employee.userId !== 0) {
-                fetch(`http://localhost:8088/employees`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(employee)
-                })
-                    .then(response => response.json())
+            if (employee.userId !== 0) {
+                newEmployee(employee)
                     .then(() => {
                         navigate("/employees")
                     })

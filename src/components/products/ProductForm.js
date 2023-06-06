@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { createProduct } from "../ApiManager"
 
 export const ProductForm = () => {
 
@@ -24,14 +25,7 @@ export const ProductForm = () => {
         }
 
         // This posts/adds the new product to the list of products in the database and then reroutes the user to /products
-        return fetch(`http://localhost:8088/products`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newProduct)
-        })
-        .then(response => response.json())
+        createProduct(newProduct)
         .then(() => {
             navigate("/products")
         })

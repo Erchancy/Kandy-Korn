@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import "./EmployeeList.css"
 import { Employee } from "./Employee"
 import { useNavigate } from "react-router-dom"
+import { getEmployeeList } from "../ApiManager"
 
 // This function creates the employees state as an empty array, observes its initial render, fetches the user data where isStaff property is true
 // and changes the array using setEmployees to reflect the fetched data
@@ -11,12 +12,10 @@ export const EmployeeList = () => {
 
     useEffect(
         () => {
-            const getEmployeeList = async() => {
-                const response = await fetch("http://localhost:8088/employees?_expand=location&_expand=user")
-                const employees = await response.json()
-                setEmployees(employees)
-            }
             getEmployeeList()
+                .then((employees) => {
+                    setEmployees(employees)
+                })
         },
         []
     )
@@ -28,10 +27,12 @@ export const EmployeeList = () => {
         {
             employees.map(employee => <Employee key={`employee--${employee.id}`}
                 id={employee.id}
+                userId={employee?.user?.id}
                 fullName={employee?.user?.name}
                 location={employee.location.address}
                 startDate={employee.startDate}
-                payRate={employee.payRate} />)
+                payRate={employee.payRate}
+                setEmployees={setEmployees} />)
         }
     </article>
 }

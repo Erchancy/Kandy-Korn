@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Route, useNavigate } from "react-router-dom"
 import "./ProductList.css"
-import { ProductContainer } from "./ProductContainer"
 import { Product } from "./Product"
+import { getProducts } from "../ApiManager"
 
 export const ProductList = ({ searchTermState }) => {
     const [products, setProducts] = useState([])
@@ -26,12 +26,10 @@ export const ProductList = ({ searchTermState }) => {
 
     useEffect(
         () => {
-            const getProducts = async () => {
-                const response = await fetch("http://localhost:8088/products?_expand=productType&_sort=name")
-                const products = await response.json()
-                setProducts(products)
-            }
             getProducts()
+            .then((products) => {
+                setProducts(products)
+            })
         },
         []
     )

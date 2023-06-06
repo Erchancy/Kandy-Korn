@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { LoyaltyEdit } from "./LoyaltyEdit"
+import { getSingleCustomer } from "../ApiManager"
 
 
 // This function creates CustomerId state through useParam to dynamically fill the object depending on the currrent url route?
@@ -13,13 +14,10 @@ export const CustomerDetails = () => {
 
     useEffect(
         () => {
-            const getCustomer = async() => {
-                const response = await fetch(`http://localhost:8088/customers?_expand=user&userId=${customerId}`)
-                const data = await response.json()
-                const singleCustomer = data[0]
+            getSingleCustomer(customerId)
+            .then((singleCustomer) => {
                 updateCustomer(singleCustomer)
-            }
-            getCustomer()
+            })
         },
         [customerId]
     )
