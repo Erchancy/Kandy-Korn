@@ -22,7 +22,7 @@ export const CustomerDetails = () => {
         [customerId]
     )
 
-    return <section className="customer">
+    return <section className="customer__details">
     <header className="customer__header">{customer?.user?.name}</header>
     <div>Email: {customer?.user?.email}</div>
     <LoyaltyEdit customerId={customerId} customer={customer}/>

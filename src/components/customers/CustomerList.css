@@ -5,6 +5,15 @@
 }
 
 .customer {
+    display: flex;
+    background-color: hotpink;
+    border: 2px dotted fuchsia;
+    color: black;
+    padding: .5rem;
+    margin: .5rem
+}
+
+.customer__details {
     background-color: hotpink;
     border: 2px dotted fuchsia;
     color: black;
@@ -21,4 +30,9 @@
     font-size: larger;
     font-weight: 700;
     line-height: 3rem;
+}
+
+.customer__candiesBought {
+    margin-left: 1.5rem;
+    margin-top: 0;
 }
